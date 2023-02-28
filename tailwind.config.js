@@ -8,7 +8,14 @@ module.exports = {
     "./src/**/*.{js,ts,jsx,tsx}"
   ],
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+        'gray-bg': '#F8F9FA',
+        'gray-bg-1': '#E9ECEF',
+        'gray-dark': '#495057',
+        'blue-hover': "#1C7ED6",
+      },
+    },
   },
   plugins: [],
 }
