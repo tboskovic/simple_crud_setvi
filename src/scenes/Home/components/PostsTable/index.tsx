@@ -68,6 +68,7 @@ const PostsTable = ({ posts } : { posts: TaleRowData[] }) => {
     const handleChangeOffset = (value: number) => {
         if(offset !== value) {
             setOffset(value);
+            setPage(0);
         }
     }
 
@@ -104,9 +105,9 @@ const PostsTable = ({ posts } : { posts: TaleRowData[] }) => {
         <div>
             {renderTableBody()}
             <Pagination
-                page={page} 
-                onChange={setPage} 
-                total={Math.ceil(posts.length/offset)}
+                page={page + 1} 
+                onChange={(value) => setPage(value-1)} 
+                total={Math.floor(posts.length/offset)}
                 className='mt-4'
                 position='center'
             />
