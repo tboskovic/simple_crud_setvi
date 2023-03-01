@@ -1,4 +1,4 @@
-import { MantineProvider, Navbar } from '@mantine/core';
+import { MantineProvider } from '@mantine/core';
 import {
   BrowserRouter, Routes, Route } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from 'react-query';
