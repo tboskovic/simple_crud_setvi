@@ -10,11 +10,36 @@ interface TaleRowData {
 }
 
 const TableRow = ({ rowData }: { rowData: TaleRowData }) => {
+
+    const navigate = useNavigate();
+
     return (
-        <div className='flex py-3 border-b border-gray-200 hover:cursor-pointer hover:bg-gray-bg-1'>
-            <Text className='w-2/5 max-h-[25px] max-h-[25px] px-3 overflow-hidden text-ellipsis whitespace-nowrap'>{rowData.title}</Text>
-            <Text className='w-3/5 max-h-[25px] max-h-[25px] px-3 overflow-hidden text-ellipsis whitespace-nowrap'>{rowData.body}</Text>
+        <div 
+            onClick={() => navigate(`/details/${rowData.id}`)} 
+            className='flex py-3 border-b border-gray-200 hover:cursor-pointer hover:bg-gray-bg-1'
+        >
+            <Text 
+                className='w-2/5 max-h-[25px] max-h-[25px] px-3 overflow-hidden text-ellipsis whitespace-nowrap'
+            >
+                {rowData.title}
+            </Text>
+            <Text 
+                className='w-3/5 max-h-[25px] max-h-[25px] px-3 overflow-hidden text-ellipsis whitespace-nowrap'
+            >
+                {rowData.body}
+            </Text>
         </div>
+    )
+}
+
+const OffsetButton = ({value, onClickAction, active, borderStyle}: {value: number, onClickAction: (value: number) => void, active: number, borderStyle: string}) => {
+    return (
+        <Button 
+            className={`border-white text-white p-0 h-[23px] w-[25px] hover:bg-transparent relative ${active === value ? 'font-bold' : 'font-thin'} ${borderStyle || ''}`}
+            onClick={() => onClickAction(value)}
+        >
+            <Text className='absolute top-1/2 left-1/2 translate-y-[-50%] translate-x-[-50%]'>{value}</Text>
+        </Button>
     )
 }
 
@@ -32,7 +57,7 @@ const PostsTable = ({ posts } : { posts: TaleRowData[] }) => {
             const end = start + offset;
             setData(posts.slice(start, end));
         }
-    }, [posts, page])
+    }, [posts, page, offset])
 
     const renderTableBody = () => {
         return data.map(row => {
@@ -40,16 +65,37 @@ const PostsTable = ({ posts } : { posts: TaleRowData[] }) => {
         })
     }
 
+    const handleChangeOffset = (value: number) => {
+        if(offset !== value) {
+            setOffset(value);
+        }
+    }
+
     return (
       <div className='bg-white rounded-lg'>
         <div className='flex items-center rounded-t-lg justify-end px-6 py-3 gap-4 bg-cyan-800 text-gray-dark'>
             <div className='flex items-end'>
-                <Button className='border-white text-white rounded-r-none p-1.5 h-auto'>10</Button>
-                <Button className='border-t-white border-b-white text-white rounded-none p-1.5 h-auto'>15</Button>
-                <Button className='border-white text-white rounded-l-none p-1.5 h-auto'>20</Button>
+                <OffsetButton
+                    value={10}
+                    onClickAction={handleChangeOffset}
+                    active={offset}
+                    borderStyle='rounded-r-none'
+                />
+                <OffsetButton
+                    value={15}
+                    onClickAction={handleChangeOffset}
+                    active={offset}
+                    borderStyle='border-l-none border-r-none rounded-none'
+                />
+                <OffsetButton
+                    value={20}
+                    onClickAction={handleChangeOffset}
+                    active={offset}
+                    borderStyle='rounded-l-none'
+                />
                 <Text size='xs' className='ml-2 text-white'>per page</Text>
             </div>
-            <Button onClick={() => navigate('/create')} className='border-white'>Add New</Button>
+            <Button onClick={() => navigate('/create')} className='border-white hover:bg-transparent'>Add New</Button>
         </div>
         <div className='flex w-full py-3 border-b border-gray-200'>
             <Text className='w-2/5 px-3' weight={500}>Title</Text>
